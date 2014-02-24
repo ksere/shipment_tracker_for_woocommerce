@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Shipment Tracker for WooCommerce 
-Plugin URI: http://www.weice.in
+Plugin URI: http://www.weice.in/wordex
 Description: Customer can able to track their shipment.
 Version: 1.0.4
 Author: WEICE SOFTSYSTEMS
