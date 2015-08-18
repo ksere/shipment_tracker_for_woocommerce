@@ -18,45 +18,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 
 		function __construct() {
 
-			$this->providers = array(
-				
-				'Australia Post' => 'http://auspost.com.au/track/track.html?id=',
-				
-				'Austria Post' => 'http://www.post.at/en/track_trace.php?pnum1=',
-				
-				'BLUEDART' => 'http://www.bluedart.com/servlet/RoutingServlet?handler=tnt&action=awbquery&awb=awb&numbers=',
-				
-				'Canada Post' => 'http://www.canadapost.ca/cpotools/apps/track/personal/findByTrackNumber?trackingNumber=',
-				
-				'City Link' => 'http://www.city-link.co.uk/dynamic/track.php?parcel_ref_num=',
-				
-				'DHL' => 'http://www.dhl.com/content/g0/en/express/tracking.shtml?brand=DHL&AWB=',
-				
-				'DPD' => 'http://track.dpdnl.nl/?parcelnumber=',
-				
-				'DTDC' => 'http://www.dtdc.in/dtdcTrack/Tracking/consignInfo.asp?strCnno=',
-				
-				'Fedex' => 'http://www.fedex.com/Tracking?action=track&tracknumbers=',
-				
-				'GATI' => 'http://www.gati.com/single_dkt_track_int.jsp?dktNo=',
-				
-				'OnTrac' => 'http://www.ontrac.com/trackingdetail.asp?tracking=',
-				
-				'POSTINDIA' => 'http://services.ptcmysore.gov.in/Speednettracking/Track.aspx?articlenumber=',
-				
-				'Posten AB' => 'http://server.logistik.posten.se/servlet/PacTrack?xslURL=/xsl/pactrack/standard.xsl&/css/kolli.css&lang2=SE&kolliid=',
-				
-				'ParcelForce' => 'http://www.parcelforce.com/portal/pw/track?trackNumber=',
-				
-				'Royal Mail' => 'http://track2.royalmail.com/portal/rm/track?trackNumber=',
-				
-				'SAPO' => 'http://sms.postoffice.co.za/TrackingParcels/Parcel.aspx?id=',
-				
-				'UPS' => 'http://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=',
-					
-				'USPS' => 'https://tools.usps.com/go/TrackConfirmAction_input?qtc_tLabels1=',
-				
-			);
+			add_action( 'init', array( $this, 'get_providers' ) );
 
 			add_action( 'admin_print_styles', array( &$this, 'admin_styles' ) );
 			add_action( 'add_meta_boxes', array( &$this, 'add_meta_box' ) );
@@ -65,6 +27,37 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			// View Order Page
 			add_action( 'woocommerce_view_order', array( &$this, 'display_tracking_info' ) );
 			add_action( 'woocommerce_email_before_order_table', array( &$this, 'email_display' ) );
+
+			add_action( 'plugins_loaded', function () {
+				load_plugin_textdomain( 'shipment-tracker', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' ); 
+			} );
+
+		}
+
+		function get_providers() {
+
+			$this->providers = apply_filters( 'woocommerce-shipment-tracker-providers', array(
+				
+				'Australia Post' => 'http://auspost.com.au/track/track.html?id={TRACKING_URL}',
+				'Austria Post'   => 'http://www.post.at/en/track_trace.php?pnum1={TRACKING_URL}',
+				'BLUEDART'       => 'http://www.bluedart.com/servlet/RoutingServlet?handler=tnt&action=awbquery&awb=awb&numbers={TRACKING_URL}',
+				'Canada Post'    => 'http://www.canadapost.ca/cpotools/apps/track/personal/findByTrackNumber?trackingNumber={TRACKING_URL}',
+				'City Link'      => 'http://www.city-link.co.uk/dynamic/track.php?parcel_ref_num={TRACKING_URL}',
+				'DHL'            => 'http://www.dhl.com/content/g0/en/express/tracking.shtml?brand=DHL&AWB={TRACKING_URL}',
+				'DPD'            => 'http://track.dpdnl.nl/?parcelnumber={TRACKING_URL}',
+				'DTDC'           => 'http://www.dtdc.in/dtdcTrack/Tracking/consignInfo.asp?strCnno={TRACKING_URL}',
+				'Fedex'          => 'http://www.fedex.com/Tracking?action=track&tracknumbers={TRACKING_URL}',
+				'GATI'           => 'http://www.gati.com/single_dkt_track_int.jsp?dktNo={TRACKING_URL}',
+				'OnTrac'         => 'http://www.ontrac.com/trackingdetail.asp?tracking={TRACKING_URL}',
+				'POSTINDIA'      => 'http://services.ptcmysore.gov.in/Speednettracking/Track.aspx?articlenumber={TRACKING_URL}',
+				'Posten AB'      => 'http://server.logistik.posten.se/servlet/PacTrack?xslURL=/xsl/pactrack/standard.xsl&/css/kolli.css&lang2=SE&kolliid={TRACKING_URL}',
+				'ParcelForce'    => 'http://www.parcelforce.com/portal/pw/track?trackNumber={TRACKING_URL}',
+				'Royal Mail'     => 'http://track2.royalmail.com/portal/rm/track?trackNumber={TRACKING_URL}',
+				'SAPO'           => 'http://sms.postoffice.co.za/TrackingParcels/Parcel.aspx?id={TRACKING_URL}',
+				'UPS'            => 'http://wwwapps.ups.com/WebTracking/track?track=yes&trackNums={TRACKING_URL}',
+				'USPS'           => 'https://tools.usps.com/go/TrackConfirmAction_input?qtc_tLabels1={TRACKING_URL}',
+			
+			) );		
 		}
 
 		function admin_styles() {
@@ -73,7 +66,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 
 		/* Add the shipment meta box in WooCommerce order page */
 		function add_meta_box() {
-			add_meta_box( 'shipment-tracker-for-woocommerce', __('Shipment Tracker', 'Shipment_Tracker'), array( &$this, 'meta_box' ), 'shop_order', 'side', 'high');
+			add_meta_box( 'shipment-tracker-for-woocommerce', __('Shipment Tracker', 'shipment-tracker'), array( &$this, 'meta_box' ), 'shop_order', 'side', 'high');
 		}
 		
 		/* Show the meta box for shipment info on the order page */
@@ -81,7 +74,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			global $woocommerce, $post;
 
 			// Providers
-			echo '<p class="form-field tracking_provider_field"><label for="tracking_provider">' . __('Provider:', 'wc_shipment_tracking') . '</label><br/><select id="tracking_provider" name="tracking_provider" class="chosen_select" style="width:100%;">';
+			echo '<p class="form-field tracking_provider_field"><label for="tracking_provider">' . __('Provider:', 'shipment-tracker') . '</label><br/><select id="tracking_provider" name="tracking_provider" class="chosen_select">';
 
 			$selected_provider = get_post_meta( $post->ID, '_tracking_provider', true );
 
@@ -93,7 +86,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 
 			woocommerce_wp_text_input( array(
 				'id' 			=> 'tracking_number',
-				'label' 		=> __('Tracking number:', 'wc_shipment_tracking'),
+				'label' 		=> __('Tracking number:', 'shipment-tracker'),
 				'placeholder' 	=> '',
 				'description' 	=> '',
 				'value'			=> get_post_meta( $post->ID, '_tracking_number', true )
@@ -101,7 +94,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			
 			woocommerce_wp_text_input( array(
 				'id' 			=> 'date_shipped',
-				'label' 		=> __('Date shipped:', 'wc_shipment_tracking'),
+				'label' 		=> __('Date shipped:', 'shipment-tracker'),
 				'placeholder' 	=> 'YYYY-MM-DD',
 				'description' 	=> '',
 				'class'			=> 'date-picker-field',
@@ -109,15 +102,15 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			) );
 
 			// Live preview
-			echo '<p class="preview_tracking_link">' . __('Preview:', 'wc_shipment_tracking') . ' <a href="" target="_blank">' . __('Click here to track your shipment', 'wc_shipment_tracking') . '</a></p>';
+			echo '<p class="preview_tracking_link">' . __('Preview:', 'shipment-tracker') . ' <a href="" target="_blank">' . __('Click here to track your shipment', 'shipment-tracker') . '</a></p>';
 
 			$provider_array = array();
 
-			foreach ( $this->providers as $provider ) {
-				$provider_array[sanitize_title( $provider )] = urlencode( $format );
+			foreach ( $this->providers as $provider => $url ) {
+				$provider_array[sanitize_title( $provider )] = urlencode( $url );
 			}
 
-			$woocommerce->add_inline_js("
+			wc_enqueue_js("
 				jQuery('p.custom_tracking_link_field, p.custom_tracking_provider_field').hide();
 
 				jQuery('input#custom_tracking_link, input#tracking_number, #tracking_provider').change(function(){
@@ -137,8 +130,8 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 
 					if ( providers[ provider ] ) {
 						link = providers[provider];
-						link = link.replace( '%251%24s', tracking );
-						link = link.replace( '%252%24s', postcode );
+						link = link.replace( '%7BTRACKING_URL%7D', tracking );
+						link = link.replace( '%7BPOSTCODE%7D', postcode );
 						link = decodeURIComponent( link );
 
 						jQuery('p.custom_tracking_link_field, p.custom_tracking_provider_field').hide();
@@ -169,9 +162,9 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			if ( isset( $_POST['tracking_number'] ) ) {
 
 				// Download data
-				$tracking_provider        = woocommerce_clean( $_POST['tracking_provider'] );
-				$tracking_number          = woocommerce_clean( $_POST['tracking_number'] );
-				$date_shipped             = woocommerce_clean( strtotime( $_POST['date_shipped'] ) );
+				$tracking_provider        = sanitize_title( $_POST['tracking_provider'] );
+				$tracking_number          = sanitize_text_field( $_POST['tracking_number'] );
+				$date_shipped             = sanitize_text_field( strtotime( $_POST['date_shipped'] ) );
 				
 				// Update order data
 				update_post_meta( $post_id, '_tracking_provider', $tracking_provider );
@@ -195,26 +188,33 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 				return;
 
 			if ( $date_shipped )
-				$date_shipped = ' ' . sprintf( __( 'on %s', 'Shipment_Tracker' ), date_i18n( __( 'l jS F Y', 'Shipment_Tracker'), $date_shipped ) );
+				$date_shipped = ' ' . sprintf( __( 'on %s', 'shipment-tracker' ), date_i18n( __( 'l jS F Y', 'shipment-tracker' ), $date_shipped ) );
 
 			$tracking_link = '';
-			
+
 			foreach ( $this->providers as $provider => $url){
-				if ( sanitize_title( $provider ) == $tracking_provider ) {
+				if ( sanitize_title($provider) == $tracking_provider ) {
 					$shipment_provider = $provider;
 					$tracking_url = $url;
 					break;
 				}
 			}
+
+			$tracking_url = str_replace('{TRACKING_URL}', $tracking_number, $tracking_url);
 			
-			echo sprintf('<p>Your order was shipped %s by %s and the Tracking number is %s</p>', $date_shipped, $shipment_provider, $tracking_number);
-			echo sprintf('<p><a target="_blank" href="%s%s">Click here</a> to track your shipment</p>', $tracking_url, $tracking_number);
+			echo '<div class="shipment-tracker-info"><p>';
+			echo sprintf( __( 'Your order was shipped %s by %s and the Tracking number is %s', 'shipment-tracker' ), $date_shipped, $shipment_provider, $tracking_number);
+			echo '</p><p>';
+			echo sprintf( __( '<a target="_blank" href="%s">Click here</a> to track your shipment', 'shipment-tracker' ), $tracking_url);
+			echo '</p></div>';
 			
 		}
 
 		/* Display shipment info in customer emails. */
 		function email_display( $order ) {
+			echo '<div style="'.apply_filters( 'woocommerce-shipment-tracker-email-css-styles', '' ).'">';
 			$this->display_tracking_info( $order->id );
+			echo '</div>';
 		}
 		
 	}

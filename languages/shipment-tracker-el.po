@@ -1,0 +1,70 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Shipment Tracker for WooCommerce\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: Tue Aug 18 2015 19:21:28 GMT+0300 (GTB Daylight Time)\n"
+"PO-Revision-Date: 2015-08-18 19:47+0200\n"
+"Last-Translator:  <kostas@nothing2crazy.com>\n"
+"Language-Team: \n"
+"Language: el\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-KeywordsList: _:1;gettext:1;dgettext:2;ngettext:1,2;dngettext:2,3;"
+"__:1;_e:1;_c:1;_n:1,2;_n_noop:1,2;_nc:1,2;__ngettext:1,2;__ngettext_noop:1,2;"
+"_x:1,2c;_ex:1,2c;_nx:1,2,4c;_nx_noop:1,2,3c;_n_js:1,2;_nx_js:1,2,3c;"
+"esc_attr__:1;esc_html__:1;esc_attr_e:1;esc_html_e:1;esc_attr_x:1,2c;"
+"esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
+"X-Loco-Target-Locale: el_GR\n"
+"X-Generator: Poedit 1.6.4\n"
+"X-Poedit-SearchPath-0: ../../plugins/shipment_tracker_for_woocommerce\n"
+
+#: ../../plugins/shipment_tracker_for_woocommerce/shipment-tracker.php:64
+msgid "Shipment Tracker"
+msgstr ""
+
+#: ../../plugins/shipment_tracker_for_woocommerce/shipment-tracker.php:72
+msgid "Provider:"
+msgstr "Μεταφορέας:"
+
+#: ../../plugins/shipment_tracker_for_woocommerce/shipment-tracker.php:84
+msgid "Tracking number:"
+msgstr "Αριθμός αποστολής:"
+
+#: ../../plugins/shipment_tracker_for_woocommerce/shipment-tracker.php:92
+msgid "Date shipped:"
+msgstr "Ημερομηνία αποστολής"
+
+#: ../../plugins/shipment_tracker_for_woocommerce/shipment-tracker.php:100
+msgid "Preview:"
+msgstr "Προεπισκόπηση"
+
+#: ../../plugins/shipment_tracker_for_woocommerce/shipment-tracker.php:100
+msgid "Click here to track your shipment"
+msgstr "Κάντε κλικ εδώ για να δείτε την πορεία της αποστολής σας"
+
+#: ../../plugins/shipment_tracker_for_woocommerce/shipment-tracker.php:186
+#, php-format
+msgid "on %s"
+msgstr "στις %s"
+
+#: ../../plugins/shipment_tracker_for_woocommerce/shipment-tracker.php:186
+msgid "l jS F Y"
+msgstr ""
+
+#: ../../plugins/shipment_tracker_for_woocommerce/shipment-tracker.php:201
+#, php-format
+msgid "Your order was shipped %s by %s and the Tracking number is %s"
+msgstr ""
+"Η παραγγελία σας έχει αποσταλεί %s με <strong>%s</strong> και ο αριθμός "
+"αποστολής είναι <strong>%s</strong>"
+
+#: ../../plugins/shipment_tracker_for_woocommerce/shipment-tracker.php:203
+#, php-format
+msgid "<a target=\"_blank\" href=\"%s\">Click here</a> to track your shipment"
+msgstr ""
+"<a target=\"_blank\" href=\"%s\">Κάντε κλικ εδώ</a> για να δείτε την πορεία "
+"της αποστολής σας."
